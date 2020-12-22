@@ -1,6 +1,6 @@
 from aiohttp import web
 import asyncio
-import os
+from subprocess import call
 
 def to_json(string):
     a=['id','name','surname']
@@ -13,6 +13,9 @@ async def postinfo(request):
         name=data['name']
         surname=data['surname']
         return name,surname
+
+def homepagehandler(request):
+    return web.FileResponse('website/index.html')
 
 def gethandler(request):
     with open('DataBase.txt') as dbfile:
@@ -42,16 +45,6 @@ async def postidhandler(request):
     with open('DataBase.txt') as dbfile:
         return web.json_response(to_json(dbfile.readlines()[-1]))
 
-async def putidhandler(request):
-    id=request.match_info['id']
-    info=await postinfo(request)
-    with open('DataBase.txt') as dbfile:
-        for user in dbfile:
-            if user.split()[0]==id:
-                pass
-        else:
-            return  os.system("curl -X POST -d 'name={}&surname={}' http://0.0.0.0:8080/students/{}".format(info[0],info[1],id))
-
 def deleteidhandler(request):
     a=''
     with open('DataBase.txt') as dbfile:
@@ -63,3 +56,11 @@ def deleteidhandler(request):
             a+=user
     return 
 
+async def putidhandler(request):
+    id=request.match_info['id']
+    info=await postinfo(request)
+    with open('DataBase.txt') as dbfile:
+        for user in dbfile:
+            if user.split()[0]==id:
+                deleteidhandler(request)
+    return await postidhandler(request)
