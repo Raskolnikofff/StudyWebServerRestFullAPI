@@ -53,6 +53,7 @@ def deleteidhandler(request):
                 with open('DataBase.txt', 'w') as dbfilewr:
                     b=dbfile.read()
                     print((a+b)[:-1],file=dbfilewr)
+                    return web.Response(status=204)
             a+=user
     return 
 
