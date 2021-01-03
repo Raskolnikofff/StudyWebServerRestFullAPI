@@ -14,9 +14,6 @@ async def postinfo(request):
         surname=data['surname']
         return name,surname
 
-def homepagehandler(request):
-    return web.FileResponse('website/index.html')
-
 def gethandler(request):
     with open('DataBase.txt') as dbfile:
         data = list()

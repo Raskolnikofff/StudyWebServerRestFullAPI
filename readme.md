@@ -28,11 +28,5 @@ python3 main.py
 ```
 * Requests
 
-Your data is in quotation marks " ".
-```
-curl -X GET -d http://0.0.0.0:8080/students
-curl -X DELETE http://0.0.0.0:8080/students/id
-curl -X POST -d 'name="your name"&surname="your surname"' http://0.0.0.0:8080/students/"id"
-curl -X PUT -d 'surname="your name"&surname="your surname"' http://0.0.0.0:8080/students/"id"
-```
+All requests can be seen and tested in http://localhost:8080/swagger
 You can also display the GET request in the browser by entering the appropriate address.
