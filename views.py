@@ -15,10 +15,6 @@ async def postinfo(request):
     return name, surname
 
 
-async def homepagehandler(request):
-    return web.FileResponse('website/index.html')
-
-
 async def gethandler(request):
     with open('DataBase.txt') as dbfile:
         data = list()
@@ -42,9 +38,9 @@ async def postidhandler(request):
             a += user
             if user.split()[0] == request.match_info['id']:
                 return web.Response(
-                                    status=409,
-                                    text='user with this id exists'
-                                    )
+                    status=409,
+                    text='user with this id exists'
+                )
     with open('DataBase.txt', 'w') as dbfilewr:
         data = await postinfo(request)
         newstud = request.match_info['id'] + ' ' + data[0] + ' ' + data[1]
@@ -53,7 +49,7 @@ async def postidhandler(request):
         return web.json_response(await to_json(dbfile.readlines()[-1]))
 
 
-async def deleteidhandler(request):
+def deleteidhandler(request):
     a = ''
     with open('DataBase.txt') as dbfile:
         for user in dbfile:
@@ -61,6 +57,7 @@ async def deleteidhandler(request):
                 with open('DataBase.txt', 'w') as dbfilewr:
                     b = dbfile.read()
                     print((a + b)[:-1], file=dbfilewr)
+                    return web.Response(status=204)
             a += user
     return
 
