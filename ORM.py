@@ -21,9 +21,8 @@ class Students(Base):
 
 
 # Help lines
-'''
-%He
-session = opendb()
+
+'''session = opendb()
 session.add_all([
     Students(name='11', surname='111'),
     Students(name='22', surname='222'),
@@ -34,4 +33,5 @@ session.commit()
 session = opendb()
 a = session.query(Students).filter_by(id=3)
 for i in a:
-    print(i.name)'''
+    print(i.name)
+session.close()'''

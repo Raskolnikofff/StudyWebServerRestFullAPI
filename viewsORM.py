@@ -42,6 +42,7 @@ async def postidhandler(request):
     session = opendb()
     user = session.query(Students).filter_by(id=request.match_info['id']).one_or_none()
     if user is not None:
+        session.close()
         return web.Response(status=409, text='user with this id exists')
     data = await postinfo(request)
     newstud = Students(id=request.match_info['id'], name=data[0], surname=data[1])
