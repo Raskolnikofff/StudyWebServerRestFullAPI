@@ -1,0 +1,107 @@
+
+
+---
+swagger: "2.0"
+info:
+  title: REST API
+  description: description in repository on github https://github.com/Raskolnikofff/StudyWebServerRestFullAPI
+  version: 0.1.9
+tags:
+- name: "student on course"
+  description: "Everything about your student"
+paths:
+  /: 
+    get:
+      summary: "open homepage"
+      tags:
+      - "student on course"
+      responses:
+        '200':
+           description: 'OK'
+  /students:
+    get:
+      summary: "find all students on course"
+      tags:
+      - "student on course"
+      responses:
+        '200':
+           description: 'OK'
+  /students/{id}:
+    get:
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of student to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      summary: "Find students with ID"
+      tags:
+      - "student on course"
+      responses:
+        '200':
+          description: 'OK'
+    post:
+     parameters:
+     - name: "id"
+       in: "path"
+       description: "ID of student to return"
+       required: true
+       type: "integer"
+       format: "int64"
+     - name: 'name'
+       in: 'formData'
+       description: "students name"
+       required: true
+       type: "string"
+     - name: 'surname'
+       in: 'formData'
+       description: "students surname"
+       required: true
+       type: "string"
+     summary: "new student with ID"
+     tags:
+     - "student on course"
+     responses:
+       '200':
+         description: 'OK'
+       '409':
+         description: 'user with this id exists'
+    put:
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of student to change"
+        required: true
+        type: "integer"
+        format: "int64"    
+      - name: 'name'
+        in: 'formData'
+        description: "students name"
+        required: true
+        type: "string"
+      - name: 'surname'
+        in: 'formData'
+        description: "students surname"
+        required: true
+        type: "string"
+      summary: "update an existing student with id"      
+      tags:
+      - "student on course"
+      responses:
+       '200':
+         description: 'OK'
+    delete:
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of student to delete in DataBase"
+        required: true
+        type: "integer"
+        format: "int64"
+      summary: "delete student with id"
+      tags:
+       - "student on course"
+      responses:
+        '204':
+           description: "No Content"
