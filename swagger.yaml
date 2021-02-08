@@ -5,19 +5,11 @@ swagger: "2.0"
 info:
   title: REST API
   description: description in repository on github https://github.com/Raskolnikofff/StudyWebServerRestFullAPI
-  version: 0.1.9
+  version: "1.0"
 tags:
 - name: "student on course"
   description: "Everything about your student"
 paths:
-  /: 
-    get:
-      summary: "open homepage"
-      tags:
-      - "student on course"
-      responses:
-        '200':
-           description: 'OK'
   /students:
     get:
       summary: "find all students on course"
@@ -26,6 +18,8 @@ paths:
       responses:
         '200':
            description: 'OK'
+           schema:
+             $ref: "#/definitions/student"
   /students/{id}:
     get:
       parameters:
@@ -41,7 +35,11 @@ paths:
       responses:
         '200':
           description: 'OK'
+          schema:
+            $ref: "#/definitions/student"
     post:
+     consumes:
+     - "application/x-www-form-urlencoded"
      parameters:
      - name: "id"
        in: "path"
@@ -65,9 +63,13 @@ paths:
      responses:
        '200':
          description: 'OK'
+         schema:
+           $ref: "#/definitions/student"
        '409':
          description: 'user with this id exists'
     put:
+      consumes:
+      - "application/x-www-form-urlencoded"
       parameters:
       - name: "id"
         in: "path"
@@ -91,6 +93,8 @@ paths:
       responses:
        '200':
          description: 'OK'
+         schema:
+           $ref: "#/definitions/student"
     delete:
       parameters:
       - name: "id"
@@ -105,3 +109,14 @@ paths:
       responses:
         '204':
            description: "No Content"
+definitions:
+  student:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      surname:
+        type: "string"
