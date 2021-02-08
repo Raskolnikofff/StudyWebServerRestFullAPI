@@ -1,11 +1,11 @@
 from aiohttp import web
 
 
-def to_json(string):
+async def to_json(string):
     a = ['id', 'name', 'surname']
     string = string.split()
     data = dict(zip(a, string))
-    return (data)
+    return data
 
 
 async def postinfo(request):
@@ -15,22 +15,18 @@ async def postinfo(request):
     return name, surname
 
 
-def homepagehandler(request):
-    return web.FileResponse('website/index.html')
-
-
-def gethandler(request):
+async def gethandler(request):
     with open('DataBase.txt') as dbfile:
         data = list()
         for user in dbfile:
-            data.append(to_json(user))
+            data.append(await to_json(user))
     return web.json_response(data)
 
 
-def getidhandler(request):
+async def getidhandler(request):
     with open('DataBase.txt') as dbfile:
         for user in dbfile:
-            data = to_json(user)
+            data = await to_json(user)
             if user.split()[0] == request.match_info['id']:
                 return web.json_response(data)
 
@@ -42,15 +38,15 @@ async def postidhandler(request):
             a += user
             if user.split()[0] == request.match_info['id']:
                 return web.Response(
-                                    status=409,
-                                    text='user with this id exists'
-                                    )
+                    status=409,
+                    text='user with this id exists'
+                )
     with open('DataBase.txt', 'w') as dbfilewr:
         data = await postinfo(request)
         newstud = request.match_info['id'] + ' ' + data[0] + ' ' + data[1]
         print(a + newstud, file=dbfilewr)
     with open('DataBase.txt') as dbfile:
-        return web.json_response(to_json(dbfile.readlines()[-1]))
+        return web.json_response(await to_json(dbfile.readlines()[-1]))
 
 
 def deleteidhandler(request):
@@ -61,6 +57,7 @@ def deleteidhandler(request):
                 with open('DataBase.txt', 'w') as dbfilewr:
                     b = dbfile.read()
                     print((a + b)[:-1], file=dbfilewr)
+                    return web.Response(status=204)
             a += user
     return
 
@@ -70,5 +67,5 @@ async def putidhandler(request):
     with open('DataBase.txt') as dbfile:
         for user in dbfile:
             if user.split()[0] == id:
-                deleteidhandler(request)
+                await deleteidhandler(request)
     return await postidhandler(request)
