@@ -1,29 +1,14 @@
 from aiohttp import web
-from customers.models import Students, opendb
-
-
-def to_json(studobject):
-    a = ['id', 'name', 'surname']
-    userdict = list()
-    userdict.append(studobject.id)
-    userdict.append(studobject.name)
-    userdict.append(studobject.surname)
-    data = dict(zip(a, userdict))
-    return data
-
-
-async def postinfo(request):
-    data = await request.post()
-    name = data['name']
-    surname = data['surname']
-    return name, surname
+from customers.models import Students
+from customers.fictures import opendb
+from customers.fictures import to_jsonORM, postinfo
 
 
 def gethandler(request):
     session = opendb()
     data = list()
     for user in session.query(Students).all():
-        data.append(to_json(user))
+        data.append(to_jsonORM(user))
     session.close()
     return web.json_response(data)
 
@@ -32,7 +17,7 @@ def getidhandler(request):
     session = opendb()
     user = session.query(Students).filter_by(id=request.match_info['id']).one_or_none()
     if user is not None:
-        data = [to_json(user)]
+        data = [to_jsonORM(user)]
         session.close()
         return web.json_response(data)
 
@@ -55,7 +40,7 @@ def deleteidhandler(request):
     statuscode = 0
     session = opendb()
     user = session.query(Students).filter_by(id=request.match_info['id']).one_or_none()
-    if user != None:
+    if user is not None:
         session.delete(user)
         statuscode = 204
         session.commit()

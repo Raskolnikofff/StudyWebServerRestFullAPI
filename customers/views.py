@@ -1,22 +1,5 @@
 from aiohttp import web
-
-
-def to_json(string):
-    a = ['id', 'name', 'surname']
-    string = string.split()
-    data = dict(zip(a, string))
-    return (data)
-
-
-async def postinfo(request):
-    data = await request.post()
-    name = data['name']
-    surname = data['surname']
-    return name, surname
-
-
-def homepagehandler(request):
-    return web.FileResponse('website/index.html')
+from customers.fictures import to_json, postinfo
 
 
 def gethandler(request):
@@ -42,9 +25,9 @@ async def postidhandler(request):
             a += user
             if user.split()[0] == request.match_info['id']:
                 return web.Response(
-                                    status=409,
-                                    text='user with this id exists'
-                                    )
+                    status=409,
+                    text='user with this id exists'
+                )
     with open('DataBase.txt', 'w') as dbfilewr:
         data = await postinfo(request)
         newstud = request.match_info['id'] + ' ' + data[0] + ' ' + data[1]
@@ -54,7 +37,7 @@ async def postidhandler(request):
 
 
 def deleteidhandler(request):
-    a=''
+    a = ''
     with open('DataBase.txt') as dbfile:
         for user in dbfile:
             if user[0] == request.match_info['id']:
@@ -65,9 +48,8 @@ def deleteidhandler(request):
     return
 
 
-
 async def putidhandler(request):
-    id=request.match_info['id']
+    id = request.match_info['id']
     with open('DataBase.txt') as dbfile:
         for user in dbfile:
             if user.split()[0] == id:
