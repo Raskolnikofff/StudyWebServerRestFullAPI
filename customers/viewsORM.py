@@ -1,6 +1,5 @@
 from aiohttp import web
-import asyncio
-from ORM import Students, opendb
+from customers.models import Students, opendb
 
 
 def to_json(studobject):

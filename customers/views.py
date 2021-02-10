@@ -54,7 +54,7 @@ async def postidhandler(request):
 
 
 def deleteidhandler(request):
-    a = ''
+    a=''
     with open('DataBase.txt') as dbfile:
         for user in dbfile:
             if user[0] == request.match_info['id']:
@@ -65,8 +65,9 @@ def deleteidhandler(request):
     return
 
 
+
 async def putidhandler(request):
-    id = request.match_info['id']
+    id=request.match_info['id']
     with open('DataBase.txt') as dbfile:
         for user in dbfile:
             if user.split()[0] == id:

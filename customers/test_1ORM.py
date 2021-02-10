@@ -1,8 +1,8 @@
 from aiohttp import web
-from routes import setup_routes
-import viewsORM
-from os import rename, remove,path
-from ORM import opendb, Students
+from aiohttpproject.urls import setup_routes
+from customers import viewsORM
+from os import rename, remove, path
+from customers.models import opendb, Students
 
 
 def help_open():
@@ -23,7 +23,7 @@ def help_open():
 def help_close():
     remove('studentsoncourse.db')
     if path.isfile('studentsoncourseConst.db'):
-        rename('studentsoncourseConst.db', 'studentsoncourse.db')
+       rename('studentsoncourseConst.db', '../studentsoncourse.db')
 
 
 async def test_to_json():
