@@ -1,2 +1,0 @@
-curl -X POST -d 'param1=value1&param2=value2' http://0.0.0.0:8080/students/{id}
-curl -X DELETE http://0.0.0.0:8080/students/{id}
